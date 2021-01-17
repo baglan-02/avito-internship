@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Booking;
+use App\Http\Resources\BookingResource;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -13,7 +14,8 @@ class BookingController extends Controller
 
         $bookings = Booking::where('room_id', $roomId)->orderBy('date_start')->get();
 
-        return $bookings;
+        return BookingResource::collection($bookings);
+
     }
 
     public function create(Request $request)
@@ -28,7 +30,7 @@ class BookingController extends Controller
         $booking->date_end = $dateEnd;
         $booking->save();
 
-        return $booking->id;
+        return response()->json(['booking_id' => $booking->id]);
     }
 
     public function delete(Request $request)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RoomResource;
 use App\Room;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class RoomController extends Controller
             $rooms = Room::orderBy($orderBy, 'desc')->get();
         }
 
-        return $rooms;
+        return RoomResource::collection($rooms);
     }
 
     public function create(Request $request)
@@ -31,7 +32,7 @@ class RoomController extends Controller
         $room->price = $price;
         $room->save();
 
-        return $room->id;
+        return response()->json(['room_id' => $room->id]);
     }
 
     public function delete(Request $request)
